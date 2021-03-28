@@ -5,6 +5,7 @@
 enableDebugConsole[] = { "76561198119540788" };
 
 briefing = 0;
+respawnOnStart = -1;
 
 class cfgNotifications {
     class Template {
