@@ -447,7 +447,7 @@ class jjx_adminMenu
 		class btnTimer: RscButton
 		{
 			text = "Heal all";
-			onMouseButtonClick = "call jjx_fnc_healAll";
+			onMouseButtonClick = "[] remoteExec ['jjx_fnc_healAll', 0]";
 			x = 0.396849 * safezoneW + safezoneX;
 			y = 0.456 * safezoneH + safezoneY;
 			w = 0.0618905 * safezoneW;
