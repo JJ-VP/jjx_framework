@@ -23,7 +23,8 @@ switch (_safetyOn) do {
         };
 
         player allowDamage false;
-        _selfArsenal = player addAction ["Arsenal", {[player, player, true] call ace_arsenal_fnc_openBox;}];
+        selfArsenal = player addAction ["Arsenal", {[player, player, true] call ace_arsenal_fnc_openBox;}];
+        saveKit = player addAction["Save Kit", {hintSilent "Kit saved\n Kit will be loaded if you respawn.";playerLoadout = getUnitLoadout [player, true];}];
     };
 
     case false;
@@ -45,6 +46,7 @@ switch (_safetyOn) do {
         };
 
         player allowDamage true;
-        player removeAction _selfArsenal;
+        player removeAction selfArsenal;
+        player removeAction saveKit;
     };
 };
