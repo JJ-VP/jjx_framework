@@ -24,7 +24,7 @@ switch (_safetyOn) do {
 
         player allowDamage false;
         selfArsenal = player addAction ["Arsenal", {[player, player, true] call ace_arsenal_fnc_openBox;}];
-        saveKit = player addAction["Save Kit", {hintSilent "Kit saved\n Kit will be loaded if you respawn.";playerLoadout = getUnitLoadout [player, true];}];
+        saveKit = player addAction["Save Kit", {["Custom",["Loudout saved","Loadout will be given on death."]] call BIS_fnc_showNotification;playerLoadout = getUnitLoadout [player, true];}];
     };
 
     case false;
