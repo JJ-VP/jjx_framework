@@ -8,7 +8,7 @@ class EditorData
 	toggles=513;
 	class ItemIDProvider
 	{
-		nextID=77;
+		nextID=79;
 	};
 	class MarkerIDProvider
 	{
@@ -16,14 +16,14 @@ class EditorData
 	};
 	class LayerIndexProvider
 	{
-		nextID=19;
+		nextID=22;
 	};
 	class Camera
 	{
-		pos[]={4100.2959,11.302775,4087.0164};
-		dir[]={-0.019134678,-0.38181746,0.92405665};
-		up[]={-0.0079048956,0.92423147,0.38174409};
-		aside[]={0.99980325,-6.6766006e-009,0.020703441};
+		pos[]={4100.1777,11.302775,4094.1665};
+		dir[]={-0.0067067463,-0.68846077,0.72524697};
+		up[]={-0.0063663148,0.72527266,0.68843353};
+		aside[]={0.99996108,1.396802e-008,0.009247168};
 	};
 };
 binarizationWanted=0;
@@ -32,13 +32,15 @@ addons[]=
 {
 	"A3_Modules_F_Curator_Curator",
 	"A3_Characters_F",
-	"A3_Ui_F"
+	"A3_Ui_F",
+	"A3_Weapons_F_Ammoboxes",
+	"ace_cargo"
 };
 class AddonsMetaData
 {
 	class List
 	{
-		items=3;
+		items=5;
 		class Item0
 		{
 			className="A3_Modules_F_Curator";
@@ -59,6 +61,20 @@ class AddonsMetaData
 			name="Arma 3 - User Interface";
 			author="Bohemia Interactive";
 			url="https://www.arma3.com";
+		};
+		class Item3
+		{
+			className="A3_Weapons_F";
+			name="Arma 3 Alpha - Weapons and Accessories";
+			author="Bohemia Interactive";
+			url="https://www.arma3.com";
+		};
+		class Item4
+		{
+			className="ace_cargo";
+			name="ACE3 - Cargo";
+			author="ACE-Team";
+			url="http://ace3mod.com/";
 		};
 	};
 };
@@ -366,7 +382,7 @@ class Mission
 	};
 	class Entities
 	{
-		items=5;
+		items=6;
 		class Item0
 		{
 			dataType="Logic";
@@ -1115,6 +1131,131 @@ class Mission
 				};
 				nAttributes=4;
 			};
+		};
+		class Item5
+		{
+			dataType="Layer";
+			name="Ace Arsenal";
+			class Entities
+			{
+				items=1;
+				class Item0
+				{
+					dataType="Object";
+					class PositionInfo
+					{
+						position[]={4100,5.8924227,4102};
+					};
+					side="Empty";
+					flags=4;
+					class Attributes
+					{
+						init="call{[this, true] call ace_arsenal_fnc_initBox;}";
+					};
+					id=77;
+					type="B_supplyCrate_F";
+					class CustomAttributes
+					{
+						class Attribute0
+						{
+							property="allowDamage";
+							expression="_this allowdamage _value;";
+							class Value
+							{
+								class data
+								{
+									class type
+									{
+										type[]=
+										{
+											"BOOL"
+										};
+									};
+									value=0;
+								};
+							};
+						};
+						class Attribute1
+						{
+							property="ENH_virtualArsenal";
+							expression="if (!is3DEN && _value) then {['AmmoboxInit', [_this, true]] spawn BIS_fnc_arsenal}";
+							class Value
+							{
+								class data
+								{
+									class type
+									{
+										type[]=
+										{
+											"BOOL"
+										};
+									};
+									value=0;
+								};
+							};
+						};
+						class Attribute2
+						{
+							property="ace_isRepairFacility";
+							expression="if (_value != (if (isNumber (configOf _this >> ""ace_repair_canRepair"")) then {getNumber (configOf _this >> ""ace_repair_canRepair"")} else {0})) then {_this setVariable ['ace_isRepairFacility', _value, true]}";
+							class Value
+							{
+								class data
+								{
+									class type
+									{
+										type[]=
+										{
+											"SCALAR"
+										};
+									};
+									value=1;
+								};
+							};
+						};
+						class Attribute3
+						{
+							property="ammoBox";
+							expression="[_this,_value] call bis_fnc_initAmmoBox;";
+							class Value
+							{
+								class data
+								{
+									class type
+									{
+										type[]=
+										{
+											"STRING"
+										};
+									};
+									value="[[[[],[]],[[],[]],[[],[]],[[],[]]],false]";
+								};
+							};
+						};
+						class Attribute4
+						{
+							property="ace_isMedicalFacility";
+							expression="_this setVariable [""ace_medical_isMedicalFacility"", _value, true];";
+							class Value
+							{
+								class data
+								{
+									class type
+									{
+										type[]=
+										{
+											"BOOL"
+										};
+									};
+									value=1;
+								};
+							};
+						};
+						nAttributes=5;
+					};
+				};
+			};
+			id=78;
 		};
 	};
 };
