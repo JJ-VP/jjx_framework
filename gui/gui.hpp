@@ -389,7 +389,7 @@ class jjx_timerMenu
 		class btnStart: RscButton
 		{
 			text = "Start the timer";
-			onMouseButtonClick = "[] execVM 'f\safeStart\f_safeStart.sqf';";
+			onMouseButtonClick = "'f\safeStart\f_safeStart.sqf' remoteExec ['execVM', 0];";
 			x = 0.469055 * safezoneW + safezoneX;
 			y = 0.456 * safezoneH + safezoneY;
 			w = 0.0618905 * safezoneW;
