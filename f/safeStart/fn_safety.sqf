@@ -23,6 +23,7 @@ switch (_safetyOn) do {
         };
 
         player allowDamage false;
+        _selfArsenal = player addAction ["Arsenal", {[player, player, true] call ace_arsenal_fnc_openBox;}];
     };
 
     case false;
@@ -44,5 +45,6 @@ switch (_safetyOn) do {
         };
 
         player allowDamage true;
+        player removeAction _selfArsenal;
     };
 };
