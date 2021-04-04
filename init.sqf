@@ -28,8 +28,8 @@
 
 jjx_admin = ["76561198119540788"];
 jjx_timer = ["76561198119540788"];
-publicVariable "jjx_admin";
-publicVariable "jjx_timer";
+compileFinal "jjx_admin = jjx_admin";
+compileFinal "jjx_timer = jjx_timer";
 
 if (isDedicated) exitWith {};
 if (!(isnil "edn_fortification_keydown")) exitwith {};
