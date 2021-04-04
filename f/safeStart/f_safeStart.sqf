@@ -9,5 +9,5 @@ if (f_var_mission_timer > 0) then {
         [] execVM "f\safeStart\f_safeStartLoop.sqf";
     };
 
-    [true] call jjx_fnc_safety;
+    [true] remoteExec ['jjx_fnc_safety', 0, true];
 };
