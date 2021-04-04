@@ -288,26 +288,6 @@ class jjx_menu
 			h = 0.044 * safezoneH;
 			tooltip = "Change your view distance.";
 		};
-		class btnNotification: RscButton
-		{
-			text = "Notification";
-			onMouseButtonClick = "_this call jjx_fnc_openNotification;";
-			x = 0.396849 * safezoneW + safezoneX;
-			y = 0.522 * safezoneH + safezoneY;
-			w = 0.0618905 * safezoneW;
-			h = 0.044 * safezoneH;
-			tooltip = "Open notification handler.";
-		};
-		class btnTimer: RscButton
-		{
-			text = "Timer";
-			onMouseButtonClick = "_this call jjx_fnc_openTimer;"
-			x = 0.469055 * safezoneW + safezoneX;
-			y = 0.522 * safezoneH + safezoneY;
-			w = 0.0618905 * safezoneW;
-			h = 0.044 * safezoneH;
-			tooltip = "Open timer menu.";
-		};
 		class btnAdmin: RscButton
 		{
 			text = "Admin";
@@ -454,7 +434,7 @@ class jjx_adminMenu
 			h = 0.022 * safezoneH;
 			tooltip = "Close the menu.";
 		};
-		class btnTimer: RscButton
+		class btnHealAll: RscButton
 		{
 			text = "Heal all";
 			onMouseButtonClick = "[] remoteExec ['jjx_fnc_healAll', 0, true];_this spawn {hintsilent 'Healed all!';uiSleep 3; hintsilent '';};";
@@ -466,12 +446,23 @@ class jjx_adminMenu
 		};
 		class btnNotification: RscButton
 		{
-			idc = 1602;
-			text = "Send notification";
-			x = 0.469055 * safezoneW + safezoneX;
-			y = 0.456 * safezoneH + safezoneY;
+			text = "Notification";
+			onMouseButtonClick = "_this call jjx_fnc_openNotification;";
+			x = 0.396849 * safezoneW + safezoneX;
+			y = 0.522 * safezoneH + safezoneY;
 			w = 0.0618905 * safezoneW;
 			h = 0.044 * safezoneH;
+			tooltip = "Open notification handler.";
+		};
+		class btnTimer: RscButton
+		{
+			text = "Timer";
+			onMouseButtonClick = "_this call jjx_fnc_openTimer;"
+			x = 0.469055 * safezoneW + safezoneX;
+			y = 0.522 * safezoneH + safezoneY;
+			w = 0.0618905 * safezoneW;
+			h = 0.044 * safezoneH;
+			tooltip = "Open timer menu.";
 		};
 	};
 };
