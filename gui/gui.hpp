@@ -288,6 +288,16 @@ class jjx_menu
 			h = 0.044 * safezoneH;
 			tooltip = "Change your view distance.";
 		};
+		class btnNotification: RscButton
+		{
+			text = "Notification";
+			onMouseButtonClick = "_this call jjx_fnc_openNotification;";
+			x = 0.396849 * safezoneW + safezoneX;
+			y = 0.522 * safezoneH + safezoneY;
+			w = 0.0618905 * safezoneW;
+			h = 0.044 * safezoneH;
+			tooltip = "Open notification handler.";
+		};
 		class btnTimer: RscButton
 		{
 			text = "Timer";
@@ -359,7 +369,7 @@ class jjx_timerMenu
 		class btnTimer: RscButton
 		{
 			text = "Set Safe Timer";
-			onMouseButtonClick = "[parseNumber ctrlText 1400] remoteExec ['jjx_fnc_setTimer', 2]";
+			onMouseButtonClick = "[parseNumber ctrlText 1400] remoteExec ['jjx_fnc_setTimer', 2];_this spawn {hintsilent format ['Timer set to %1 minutes', parseNumber ctrlText 1400];uiSleep 3; hintsilent '';};";
 			x = 0.396849 * safezoneW + safezoneX;
 			y = 0.522 * safezoneH + safezoneY;
 			w = 0.0618905 * safezoneW;
@@ -368,7 +378,7 @@ class jjx_timerMenu
 		};
 		class btnEnableSafe: RscButton
 		{
-			onMouseButtonClick = "[true] call jjx_fnc_safety;";
+			onMouseButtonClick = "[true] remoteExec ['jjx_fnc_safety', 0, true];_this spawn {hintsilent 'Silently enabled safestart';uiSleep 3; hintsilent '';};";
 			text = "Enable Safety";
 			x = 0.54126 * safezoneW + safezoneX;
 			y = 0.456 * safezoneH + safezoneY;
@@ -378,7 +388,7 @@ class jjx_timerMenu
 		};
 		class btnDisableSafe: RscButton
 		{
-			onMouseButtonClick = "missionNamespace setVariable ['f_var_mission_timer', -1, true];[false] call jjx_fnc_safety;";
+			onMouseButtonClick = "missionNamespace setVariable ['f_var_mission_timer', -1, true];[false] remoteExec ['jjx_fnc_safety', 0, true];_this spawn {hintsilent 'Silently disabled safestart';uiSleep 3; hintsilent '';};";
 			text = "Disable safety";
 			x = 0.54126 * safezoneW + safezoneX;
 			y = 0.522 * safezoneH + safezoneY;
@@ -389,7 +399,7 @@ class jjx_timerMenu
 		class btnStart: RscButton
 		{
 			text = "Start the timer";
-			onMouseButtonClick = "'f\safeStart\f_safeStart.sqf' remoteExec ['execVM', 0];";
+			onMouseButtonClick = "'f\safeStart\f_safeStart.sqf' remoteExec ['execVM', 0];_this spawn {hintsilent 'Safestart timer has started';uiSleep 3; hintsilent '';};";
 			x = 0.469055 * safezoneW + safezoneX;
 			y = 0.456 * safezoneH + safezoneY;
 			w = 0.0618905 * safezoneW;
@@ -399,7 +409,7 @@ class jjx_timerMenu
 		class btnEnd: RscButton
 		{
 			text = "End the timer";
-			onMouseButtonClick = "missionNamespace setVariable ['f_var_mission_timer', -1, true];[['SafeStartMissionStarting',['Safe Start ended by admin!']],'bis_fnc_showNotification',true] call BIS_fnc_MP;[false] call jjx_fnc_safety;[false] call jjx_fnc_safety;";
+			onMouseButtonClick = "missionNamespace setVariable ['f_var_mission_timer', -1, true];[['SafeStartMissionStarting',['Safe Start ended by admin!']],'bis_fnc_showNotification',true] call BIS_fnc_MP;[false] remoteExec ['jjx_fnc_safety', 0, true];";
 			x = 0.469055 * safezoneW + safezoneX;
 			y = 0.522 * safezoneH + safezoneY;
 			w = 0.0618905 * safezoneW;
@@ -447,12 +457,87 @@ class jjx_adminMenu
 		class btnTimer: RscButton
 		{
 			text = "Heal all";
-			onMouseButtonClick = "[] remoteExec ['jjx_fnc_healAll', 0]";
+			onMouseButtonClick = "[] remoteExec ['jjx_fnc_healAll', 0, true];_this spawn {hintsilent 'Healed all!';uiSleep 3; hintsilent '';};";
 			x = 0.396849 * safezoneW + safezoneX;
 			y = 0.456 * safezoneH + safezoneY;
 			w = 0.0618905 * safezoneW;
 			h = 0.044 * safezoneH;
 			tooltip = "Ace heal all players.";
+		};
+		class btnNotification: RscButton
+		{
+			idc = 1602;
+			text = "Send notification";
+			x = 0.469055 * safezoneW + safezoneX;
+			y = 0.456 * safezoneH + safezoneY;
+			w = 0.0618905 * safezoneW;
+			h = 0.044 * safezoneH;
+		};
+	};
+};
+
+class jjx_notificationMenu
+{
+	idd = 997;
+	movingenable = false;
+
+	class controls 
+	{
+		class GUIBack220: IGUIBack
+		{
+			idc = 2200;
+			x = 0.386534 * safezoneW + safezoneX;
+			y = 0.412 * safezoneH + safezoneY;
+			w = 0.226932 * safezoneW;
+			h = 0.176 * safezoneH;
+		};
+		class txtName: RscText
+		{
+			idc = 1000;
+			text = "JJ's Notification Menu";
+			x = 0.386534 * safezoneW + safezoneX;
+			y = 0.412 * safezoneH + safezoneY;
+			w = 0.216617 * safezoneW;
+			h = 0.022 * safezoneH;
+		};
+		class btnClose: RscButton
+		{
+			onMouseButtonClick = "closeDialog 0;";
+			idc = 1600;
+			text = "X";
+			x = 0.603151 * safezoneW + safezoneX;
+			y = 0.412 * safezoneH + safezoneY;
+			w = 0.0103151 * safezoneW;
+			h = 0.022 * safezoneH;
+			tooltip = "Close the menu.";
+		};
+		class edtTitle: RscEdit
+		{
+			idc = 1401;
+			x = 0.396849 * safezoneW + safezoneX;
+			y = 0.456 * safezoneH + safezoneY;
+			w = 0.206302 * safezoneW;
+			h = 0.044 * safezoneH;
+			tooltip = "Input the title for the notification.";
+		};
+		class edtDescription: RscEdit
+		{
+			idc = 1402;
+			x = 0.396849 * safezoneW + safezoneX;
+			y = 0.522 * safezoneH + safezoneY;
+			w = 0.144411 * safezoneW;
+			h = 0.044 * safezoneH;
+			tooltip = "Input the description for the notification.";
+		};
+		class btnSend: RscButton
+		{
+			text = "Send";
+			onMouseButtonClick = "['Custom',[format['%1',ctrlText 1401],format['%1',ctrlText 1402]]] remoteExec ['bis_fnc_showNotification', 0, true];";
+			x = 0.551575 * safezoneW + safezoneX;
+			y = 0.522 * safezoneH + safezoneY;
+			w = 0.0515754 * safezoneW;
+			h = 0.044 * safezoneH;
+			tooltip = "Send the notification";
 		};
 	};
 };

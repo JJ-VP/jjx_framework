@@ -70,6 +70,7 @@ class CfgFunctions {
             class grass {};
             class openTimer {};
             class openAdmin {};
+            class openNotification {};
             class setTimer {};
             class healAll {};
         };
