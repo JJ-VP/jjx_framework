@@ -23,8 +23,9 @@ switch (_safetyOn) do {
         };
 
         player allowDamage false;
+        removeAllActions player;
         selfArsenal = player addAction ["<t size=2 color='#0000ff' font='PuristaLight'>Arsenal</t>", {[player, player, true] call ace_arsenal_fnc_openBox;}];
-        saveKit = player addAction["<t size=2 color='#00ff00' font='PuristaLight'>Save Kit</t>", {["Custom",["Loudout saved","Loadout will be given on death."]] call BIS_fnc_showNotification;playerLoadout = getUnitLoadout [player, true];}];
+        saveKit = player addAction["<t size=2 color='#00ff00' font='PuristaLight'>Save Kit</t>", {["Custom",["Loudout saved","Loadout will be given on death."]] call BIS_fnc_showNotification;[player] remoteExec ["jjx_fnc_saveKit", 0]}];
     };
 
     case false;

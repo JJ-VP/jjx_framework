@@ -31,6 +31,48 @@ jjx_timer = ["76561198119540788"];
 compileFinal "jjx_admin = jjx_admin";
 compileFinal "jjx_timer = jjx_timer";
 
+if(isNil "jjx_disconnectedLoadouts") then {
+    jjx_disconnectedLoadouts = [];
+};
+
+jjx_fnc_loadClientData = {
+	_this params ["_loudout"];
+	player setUnitLoadout _loudout;
+};
+
+jjx_fnc_saveKit = {
+	_this params ["_player"];
+
+	_uid = getPlayerUID _player;
+	_loadout = getUnitLoadout _player;
+
+	_uidIndex = jjx_disconnectedLoadouts find _uid;
+	if(_uidIndex > -1) then {
+        _loadoutIndex = _uidIndex + 1;
+        jjx_disconnectedLoadouts set [_loadoutIndex, [_loadout]];
+    } else {
+        jjx_disconnectedLoadouts pushBack _uid;
+        jjx_disconnectedLoadouts pushBack [_loadout];
+    };
+};
+
+if (isServer) then {
+	addMissionEventHandler [
+		"playerConnected",
+		{
+			params ["_id", "_uid", "_name", "_jip", "_owner"];
+			if (_jip) then {
+				private _clientData = missionNamespace getVariable ["jjx_disconnectedLoadouts", []];
+				private _uidIndex = _clientData find _uid;
+				if (_uidIndex > -1) then {
+					private _loudoutIndex = _uidIndex + 1;
+					(_clientData select _loudoutIndex) remoteExec ["jjx_fnc_loadClientData", _owner];
+				};
+			};
+		}
+	];
+};
+
 if (isDedicated) exitWith {};
 if (!(isnil "edn_fortification_keydown")) exitwith {};
 

@@ -4,6 +4,13 @@ if ((roleDescription player) find "Engineer" >= 0) then {
 
 waituntil {!(IsNull (findDisplay 46))};
 
+if (f_var_mission_timer <= 0) then {
+	removeAllActions player;
+	selfArsenal = player addAction ["<t size=2 color='#0000ff' font='PuristaLight'>Arsenal</t>", {[player, player, true] call ace_arsenal_fnc_openBox;}];
+	saveKit = player addAction["<t size=2 color='#00ff00' font='PuristaLight'>Save Kit</t>", {["Custom",["Loudout saved","Loadout will be given on death."]] call BIS_fnc_showNotification;[player] remoteExec ["jjx_fnc_saveKit", 0]}];
+	_this spawn {uiSleep 120;player removeAction selfArsenal;player removeAction saveKit;}
+};
+
 if ((player getVariable "ace_isEngineer") >= 1) then {
 	edn_fortification_keydown = (findDisplay 46) displayAddEventHandler ["KeyDown","_this call edn_fnc_keyCheck"];
 };
