@@ -21,4 +21,4 @@ _useAlt = _openSettingsKey select 1 select 2;
 
 _SCAstring = (if (_useShift) then {"Shift + "} else {""}) + (if (_useCtrl) then {"Ctrl + "} else {""}) + (if (_useAlt) then {"Alt + "} else {""});
 
-systemChat format ["CH View Distance: CBA Keybindings activated. Press <%1%2> to open settings.", _SCAstring, [[_openSettingsKey select 0] call BIS_fnc_keyCode] call CBA_fnc_capitalize];
+systemChat "JJX Framework loaded, Press F1 to open the player menu!";
