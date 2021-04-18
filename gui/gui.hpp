@@ -235,13 +235,15 @@ class jjx_menu
 	{
 		class GUIBack220: IGUIBack
 		{
-			x = 0.386533 * safezoneW + safezoneX;
+			idc = 2200;
+			x = 0.386534 * safezoneW + safezoneX;
 			y = 0.412 * safezoneH + safezoneY;
 			w = 0.226932 * safezoneW;
 			h = 0.176 * safezoneH;
 		};
 		class txtName: RscText
 		{
+			idc = 1000;
 			text = "BEAR Menu";
 			x = 0.386534 * safezoneW + safezoneX;
 			y = 0.412 * safezoneH + safezoneY;
@@ -250,8 +252,9 @@ class jjx_menu
 		};
 		class btnClose: RscButton
 		{
+			onMouseButtonClick = "closeDialog 0;";
+			idc = 1600;
 			text = "X";
-			onMouseButtonClick = "closeDialog 0;"
 			x = 0.603151 * safezoneW + safezoneX;
 			y = 0.412 * safezoneH + safezoneY;
 			w = 0.0103151 * safezoneW;
@@ -260,18 +263,20 @@ class jjx_menu
 		};
 		class btnBackpack: RscButton
 		{
-			text = "Hide Backpack";
-			onMouseButtonClick = "if (isObjectHidden unitBackpack player) then {[unitBackpack player, false] remoteExec ['hideObjectGlobal', 2];} else {[unitBackpack player, true] remoteExec ['hideObjectGlobal', 2];};"
+			onMouseButtonClick = "if (isObjectHidden unitBackpack player) then {[unitBackpack player, false] remoteExec ['hideObjectGlobal', 2];} else {[unitBackpack player, true] remoteExec ['hideObjectGlobal', 2];};";
+			idc = 1601;
+			text = "Toggle backpack";
 			x = 0.396849 * safezoneW + safezoneX;
 			y = 0.456 * safezoneH + safezoneY;
 			w = 0.0618905 * safezoneW;
 			h = 0.044 * safezoneH;
-			tooltip = "Toggle the visability of you backpack";
+			tooltip = "Toggle the visability of you backpack.";
 		};
 		class btnGrass: RscButton
 		{
-			text = "Hide Grass";
-			onMouseButtonClick = "_this call jjx_fnc_grass;"
+			onMouseButtonClick = "_this call jjx_fnc_grass;";
+			idc = 1602;
+			text = "Toggle Grass";
 			x = 0.469055 * safezoneW + safezoneX;
 			y = 0.456 * safezoneH + safezoneY;
 			w = 0.0618905 * safezoneW;
@@ -280,8 +285,9 @@ class jjx_menu
 		};
 		class btnVisability: RscButton
 		{
-			text = "Change view";
 			onMouseButtonClick = "closeDialog 0;_this call CHVD_fnc_openDialog;";
+			idc = 1603;
+			text = "Change view";
 			x = 0.54126 * safezoneW + safezoneX;
 			y = 0.456 * safezoneH + safezoneY;
 			w = 0.0618905 * safezoneW;
@@ -290,13 +296,36 @@ class jjx_menu
 		};
 		class btnAdmin: RscButton
 		{
+			onMouseButtonClick = "_this call jjx_fnc_openAdmin;";
+			idc = 1604;
 			text = "Admin";
-			onMouseButtonClick = "_this call jjx_fnc_openAdmin;"
 			x = 0.54126 * safezoneW + safezoneX;
 			y = 0.522 * safezoneH + safezoneY;
 			w = 0.0618905 * safezoneW;
 			h = 0.044 * safezoneH;
-			tooltip = "Open admin menu.";
+			tooltip = "Options for admins";
+		};
+		class btnSycn: RscButton
+		{
+			idc = 1605;
+			text = "Sync";
+			onMouseButtonClick = "player setUnitLoadout (getUnitLoadout player);";
+			x = 0.396849 * safezoneW + safezoneX;
+			y = 0.522 * safezoneH + safezoneY;
+			w = 0.0618905 * safezoneW;
+			h = 0.044 * safezoneH;
+			tooltip = "Is someone says you have no clothes when you do, click me.";
+		};
+		class btnZeus: RscButton
+		{
+			idc = 1606;
+			text = "Zeus";
+			onMouseButtonClick = "_this call jjx_fnc_openZeus;";
+			x = 0.469055 * safezoneW + safezoneX;
+			y = 0.522 * safezoneH + safezoneY;
+			w = 0.0618905 * safezoneW;
+			h = 0.044 * safezoneH;
+			tooltip = "Options for zeus";
 		};
 	};
 };
@@ -463,6 +492,64 @@ class jjx_adminMenu
 			w = 0.0618905 * safezoneW;
 			h = 0.044 * safezoneH;
 			tooltip = "Open timer menu.";
+		};
+	};
+};
+
+class jjx_zeusMenu
+{
+	idd = 998;
+	movingenable = false;
+
+	class controls 
+	{
+		class GUIBack220: IGUIBack
+		{
+			idc = 2200;
+			x = 0.386534 * safezoneW + safezoneX;
+			y = 0.412 * safezoneH + safezoneY;
+			w = 0.226932 * safezoneW;
+			h = 0.176 * safezoneH;
+		};
+		class txtName: RscText
+		{
+			idc = 1000;
+			text = "Bear Zeus Menu";
+			x = 0.386534 * safezoneW + safezoneX;
+			y = 0.412 * safezoneH + safezoneY;
+			w = 0.216617 * safezoneW;
+			h = 0.022 * safezoneH;
+		};
+		class btnClose: RscButton
+		{
+			onMouseButtonClick = "closeDialog 0;";
+			idc = 1600;
+			text = "X";
+			x = 0.603151 * safezoneW + safezoneX;
+			y = 0.412 * safezoneH + safezoneY;
+			w = 0.0103151 * safezoneW;
+			h = 0.022 * safezoneH;
+			tooltip = "Close the menu.";
+		};
+		class btnHealAll: RscButton
+		{
+			text = "Heal all";
+			onMouseButtonClick = "[] remoteExec ['jjx_fnc_healAll', 0, true];_this spawn {hintsilent 'Healed all!';uiSleep 3; hintsilent '';};";
+			x = 0.396849 * safezoneW + safezoneX;
+			y = 0.456 * safezoneH + safezoneY;
+			w = 0.0618905 * safezoneW;
+			h = 0.044 * safezoneH;
+			tooltip = "Ace heal all players.";
+		};
+		class btnToggleFPS: RscButton
+		{
+			text = "Toggle FPS";
+			onMouseButtonClick = "call jjx_fnc_toggleFPS;";
+			x = 0.396849 * safezoneW + safezoneX;
+			y = 0.522 * safezoneH + safezoneY;
+			w = 0.0618905 * safezoneW;
+			h = 0.044 * safezoneH;
+			tooltip = "Toggle the FPS overlay";
 		};
 	};
 };
