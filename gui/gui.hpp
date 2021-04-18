@@ -430,7 +430,7 @@ class jjx_timerMenu
 
 class jjx_adminMenu
 {
-	idd = 998;
+	idd = 997;
 	movingenable = false;
 
 	class controls 
@@ -493,12 +493,23 @@ class jjx_adminMenu
 			h = 0.044 * safezoneH;
 			tooltip = "Open timer menu.";
 		};
+		class btnGroups: RscButton
+		{
+			onMouseButtonClick = "_this call jjx_fnc_openGroups;";
+			idc = 1602;
+			text = "Group Menu";
+			x = 0.469055 * safezoneW + safezoneX;
+			y = 0.456 * safezoneH + safezoneY;
+			w = 0.0618905 * safezoneW;
+			h = 0.044 * safezoneH;
+			tooltip = "Open the group management menu.";
+		};
 	};
 };
 
 class jjx_zeusMenu
 {
-	idd = 998;
+	idd = 996;
 	movingenable = false;
 
 	class controls 
@@ -554,9 +565,90 @@ class jjx_zeusMenu
 	};
 };
 
+class jjx_groupMenu
+{
+	idd = 995;
+	movingenable = false;
+
+	class controls 
+	{
+		class GUIBackground: IGUIBack
+		{
+			idc = 2200;
+			x = 0.386534 * safezoneW + safezoneX;
+			y = 0.412 * safezoneH + safezoneY;
+			w = 0.226932 * safezoneW;
+			h = 0.176 * safezoneH;
+		};
+		class txtName: RscText
+		{
+			idc = 1000;
+			text = "JJ's Group Menu";
+			x = 0.386534 * safezoneW + safezoneX;
+			y = 0.412 * safezoneH + safezoneY;
+			w = 0.216617 * safezoneW;
+			h = 0.022 * safezoneH;
+		};
+		class btnClose: RscButton
+		{
+			onMouseButtonClick = "closeDialog 0;";
+			idc = 1600;
+			text = "X";
+			x = 0.603151 * safezoneW + safezoneX;
+			y = 0.412 * safezoneH + safezoneY;
+			w = 0.0103151 * safezoneW;
+			h = 0.022 * safezoneH;
+			tooltip = "Close the menu.";
+		};
+		class lstPlayers: RscListbox
+		{
+			idc = 1520;
+			x = 0.396849 * safezoneW + safezoneX;
+			y = 0.445 * safezoneH + safezoneY;
+			w = 0.0618905 * safezoneW;
+			h = 0.132 * safezoneH;
+		};
+		class lstGroups: RscListbox
+		{
+			idc = 1521;
+			x = 0.469055 * safezoneW + safezoneX;
+			y = 0.445 * safezoneH + safezoneY;
+			w = 0.0618905 * safezoneW;
+			h = 0.132 * safezoneH;
+		};
+		class btnRename: RscButton
+		{
+			idc = 1602;
+			text = "Rename";
+			onMouseButtonClick = "call jjx_group_rename;";
+			x = 0.54126 * safezoneW + safezoneX;
+			y = 0.445 * safezoneH + safezoneY;
+			w = 0.0618905 * safezoneW;
+			h = 0.044 * safezoneH;
+			tooltip = "Select a group and wright the name below";
+		};
+		class guiRename: IGUIBack
+		{
+			idc = 2201;
+			x = 0.54126 * safezoneW + safezoneX;
+			y = 0.511 * safezoneH + safezoneY;
+			w = 0.0618905 * safezoneW;
+			h = 0.044 * safezoneH;
+		};
+		class edtRename: RscEdit
+		{
+			idc = 1420;
+			x = 0.54126 * safezoneW + safezoneX;
+			y = 0.511 * safezoneH + safezoneY;
+			w = 0.0618905 * safezoneW;
+			h = 0.044 * safezoneH;
+		};
+	};
+};
+
 class jjx_notificationMenu
 {
-	idd = 997;
+	idd = 994;
 	movingenable = false;
 
 	class controls 
