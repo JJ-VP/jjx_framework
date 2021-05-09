@@ -76,6 +76,8 @@ class CfgFunctions {
             class toggleFPS {};
             class setTimer {};
             class healAll {};
+            class isAdmin {};
+            class adminMenu {};
         };
         class safeStart {
             file = "f\safeStart";

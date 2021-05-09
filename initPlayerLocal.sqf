@@ -25,6 +25,8 @@ _keyDown = (findDisplay 46) displayAddEventHandler ["KeyDown", 'if (_this select
     };
 };
 
+player setVariable ["steamName", profileNameSteam, true]; //Set the players steamname into a variable that can be read by the server
+
 while {true} do {
 	waituntil {!(IsNull (findDisplay 312))};
 	_keyDown2 = (findDisplay 312) displayAddEventHandler ["KeyDown", 'if (_this select 1 == 59) then {if (!(isNull (findDisplay 999))) exitWith {closeDialog 0;};if (!(isNull (findDisplay 998))) exitWith {closeDialog 0;};createDialog "jjx_menu";}'];
