@@ -8,17 +8,19 @@ if (isMultiplayer) then {
 	jjx_group_players = {playerList = allPlayers;}; //If multiplayer playerList = all players
 	publicVariable "playerList";
 } else {
-	jjx_group_players = {playerList = switchableUnits;}; //If not multiplayer playerList = switchable units
+	jjx_group_players = {playerList = switchableUnits;}; //If singleplayer playerList = switchable units
 	publicVariable "playerList";
 };
 
 jjx_group_update = {
 	while {!isNull (findDisplay 995)} do {
 		call jjx_group_players;
+		allGroupsWithPlayers = [];
+		{allGroupsWithPlayers pushBackUnique group _x} forEach allPlayers;
 		{
 			lbadd [1521, str(_x)];
 			lbSetData [1521, _x]
-		} forEach allGroups;
+		} forEach allGroupsWithPlayers;
 		if (lbCurSel 1521 == -1) then {
 			{
 				lbAdd [1520, name _x];
@@ -26,7 +28,7 @@ jjx_group_update = {
 		} else {
 			{
 				lbAdd [1520, name _x];
-			} forEach units (allGroups select (lbCurSel 1521));
+			} forEach units (allGroupsWithPlayers select (lbCurSel 1521));
 		};
 		uiSleep 0.05;
 		lbClear 1520;
@@ -42,7 +44,7 @@ jjx_group_rename = {
 			[] spawn {hintSilent "You didn't specify a name";uiSleep 3; hintSilent "";};
 			systemChat str(ctrlText 1420);
 		} else {
-			_group = allGroups select (lbCurSel 1521);
+			_group = (allGroupsWithPlayers select (lbCurSel 1521));
 			_name = ctrlText 1420;
 			_oldName = groupID _group;
 			_group setGroupIDGlobal [_name];
