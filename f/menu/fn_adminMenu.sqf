@@ -63,7 +63,7 @@ jjx_admin_update = {
 			switch(_x select 1) do {
 				case "god": {
 					if ((lbCurSel 1500) != -1) then {
-						if (isDamageAllowed (playerList select (lbCurSel 1500))) then {
+						if (isNil {((playerList select (lbCurSel 1500)) getVariable "jjx_god")} || {!((playerList select (lbCurSel 1500)) getVariable "jjx_god")}) then {
 							lbAdd [1501, format ["%1 - OFF", _x select 0]];
 							lbSetColor [1501,  _forEachIndex, jjx_admin_red];
 							lbSetTooltip [1501, _forEachIndex, _x select 3];
@@ -181,10 +181,9 @@ jjx_admin_init = {
 	features = [];
 	featuresOff = [ //List of all features to display in the format ["Display Name", "funmctionName","Requires Player selected", "ToolTip"],
 		//Need to test if I can add a header / spacer (actions)
-		["Shorten Rope", "shortenRope", false, "Shorten the ropes of the vehicle you are looking at","A"],
-		["Kill", "kill", true, "Select a player to kill", "AZ"],
-		["Heal", "heal", true, "Select a player to heal", "AZ"],
-		["TP to player", "tpToPlayer", true, "Select a player to teleport to", "AZ"],
+		["Kill", "kill", true, "Select a player to kill"],
+		["Heal", "heal", true, "Select a player to heal"],
+		["TP to player", "tpToPlayer", true, "Select a player to teleport to"],
 		["TP player here", "tpPlayerHere", true, "Select a player to teleport them here"],
 		["Repair", "repair", true, "Select a player to repair their vehicle or don't select a player to repair whatever you are looking at"],
 		["Delete", "delete", false, "Select a player to delete their vehicle or don't select a player to delete whatever you are looking at"],
@@ -199,7 +198,7 @@ jjx_admin_init = {
 		["Piss", "pee", true, "Make the player you select have the sudden urge to piss"],
 		//Header / spacer (Toggleable)
 		["God", "god", true, "Select a player to toggle their imortality"],
-		["Map TP", "mapTP", false, "Select a player to toggle their map teleportation"],
+		["Map TP", "mapTP", true, "Select a player to toggle their map teleportation"],
 		["Freeze", "freeze", true, "Select a player to toggle freeze them"],
 		["Map Markers", "markers", true, "Select a player to toggle map markers for them"],
 		//Header /spacer (Utility)
@@ -223,6 +222,7 @@ jjx_admin_start = {
 	waitUntil {time > 0};
 	if (_isAdmin) then { //If UID is in jjx_admin
 		call jjx_admin_init; //Initalise menu
+		call jjx_admin_publishVar; //Turn all functions into public variables
 		waitUntil{!isNull (findDisplay 46)}; //Wait untill the game screen is avalible
 		call jjx_admin_open; //Open the menu
 	};
@@ -292,6 +292,7 @@ jjx_admin_tpPlayerHere = {
 };
 
 jjx_admin_mapTP = {
+	params["_selectedIndex"];
 	_player = playerList select _selectedIndex;
 	hintSilent parseText format ["%1You toggled map TP for<br/><t color='#42ebf4'>%2</t>", hintHeader, name _player];
 	remoteExec ["jjx_admin_mapTPExec", _player];
@@ -545,28 +546,6 @@ jjx_admin_peeExec = {
 	};
 	sleep 4.12;
 	_updateDir = false;
-};
-
-jjx_admin_shortenRope = {
-	_vehicle = cursorObject;
-	[_vehicle] spawn {
-		params ["_vehicle"];
-		for "_i" from 0 to 8 do {
-			if([_vehicle] call ASL_Can_Shorten_Ropes) then {
-				private ["_activeRopes"];
-				_activeRopes = [_vehicle] call ASL_Get_Active_Ropes;
-				if(count _activeRopes > 1) then {
-					player setVariable ["ASL_Shorten_Index_vehicle", _vehicle];
-					["Shorten Cargo Ropes","ASL_Shorten_Ropes_Index_Action",_activeRopes] call ASL_Show_Select_Ropes_Menu;
-				} else {
-					if(count _activeRopes == 1) then {
-						[_vehicle,player,(_activeRopes select 0) select 0] call ASL_Shorten_Ropes;
-					};
-				};
-			};
-			sleep 1;
-		};
-	};
 };
 
 // LOADOUT MENU
