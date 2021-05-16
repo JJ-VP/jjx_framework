@@ -13,6 +13,7 @@
 
 #define jjx_admin_red [ 1, 0.22, 0.22, 1]
 #define jjx_admin_green [ 0.22, 0.7, 0.2, 1]
+#define jjx_admin_custom [(profilenamespace getvariable ['GUI_BCG_RGB_R',0.13]),(profilenamespace getvariable ['GUI_BCG_RGB_G',0.54]),(profilenamespace getvariable ['GUI_BCG_RGB_B',0.21]),1]
 
 _isAdmin = player call jjx_fnc_isAdmin;
 
@@ -59,11 +60,16 @@ jjx_admin_update = {
 			features pushback _x;
 		} forEach featuresOff; publicVariable "features";
 
-		{
-			switch(_x select 1) do {
-				case "god": {
-					if ((lbCurSel 1500) != -1) then {
-						if (isNil {((playerList select (lbCurSel 1500)) getVariable "jjx_god")} || {!((playerList select (lbCurSel 1500)) getVariable "jjx_god")}) then {
+		if (lbCurSel 1500 == -1) then {
+			{
+				switch(_x select 1) do {
+					case "header": {
+						lbAdd [1501, _x select 0];
+						lbSetColor [1501,  _forEachIndex, jjx_admin_custom];
+						lbSetTooltip [1501, _forEachIndex, _x select 3];
+					};
+					case "god": {
+						if (isDamageAllowed player) then {
 							lbAdd [1501, format ["%1 - OFF", _x select 0]];
 							lbSetColor [1501,  _forEachIndex, jjx_admin_red];
 							lbSetTooltip [1501, _forEachIndex, _x select 3];
@@ -72,15 +78,9 @@ jjx_admin_update = {
 							lbSetColor [1501, _forEachIndex, jjx_admin_green];
 							lbSetTooltip [1501, _forEachIndex, _x select 3];
 						};
-					} else {
-						lbAdd [1501, format ["%1 - OFF", _x select 0]];
-						lbSetColor [1501,  _forEachIndex, jjx_admin_red];
-						lbSetTooltip [1501, _forEachIndex, _x select 3];
 					};
-				};
-				case "mapTP": {
-					if ((lbCurSel 1500) != -1) then {
-						if (isNil {((playerList select (lbCurSel 1500)) getVariable "jjx_mapTP")} || {!((playerList select (lbCurSel 1500)) getVariable "jjx_mapTP")}) then {
+					case "vehGod": {
+						if (isDamageAllowed (objectParent player)) then {
 							lbAdd [1501, format ["%1 - OFF", _x select 0]];
 							lbSetColor [1501,  _forEachIndex, jjx_admin_red];
 							lbSetTooltip [1501, _forEachIndex, _x select 3];
@@ -89,15 +89,9 @@ jjx_admin_update = {
 							lbSetColor [1501, _forEachIndex, jjx_admin_green];
 							lbSetTooltip [1501, _forEachIndex, _x select 3];
 						};
-					} else {
-						lbAdd [1501, format ["%1 - OFF", _x select 0]];
-						lbSetColor [1501,  _forEachIndex, jjx_admin_red];
-						lbSetTooltip [1501, _forEachIndex, _x select 3];
 					};
-				};
-				case "freeze": {
-					if ((lbCurSel 1500) != -1) then {
-						if (isNil {((playerList select (lbCurSel 1500)) getVariable "jjx_frozen")} || {!((playerList select (lbCurSel 1500)) getVariable "jjx_frozen")}) then {
+					case "ammo": {
+						if ((isNil {player getvariable "jjx_ammo"}) || {!(player getVariable "jjx_ammo")}) then {
 							lbAdd [1501, format ["%1 - OFF", _x select 0]];
 							lbSetColor [1501,  _forEachIndex, jjx_admin_red];
 							lbSetTooltip [1501, _forEachIndex, _x select 3];
@@ -106,15 +100,9 @@ jjx_admin_update = {
 							lbSetColor [1501, _forEachIndex, jjx_admin_green];
 							lbSetTooltip [1501, _forEachIndex, _x select 3];
 						};
-					} else {
-						lbAdd [1501, format ["%1 - OFF", _x select 0]];
-						lbSetColor [1501,  _forEachIndex, jjx_admin_red];
-						lbSetTooltip [1501, _forEachIndex, _x select 3];
 					};
-				};
-				case "markers": {
-					if ((lbCurSel 1500) != -1) then {
-						if (isNil {((playerList select (lbCurSel 1500)) getVariable "mapMarkers")} || {!((playerList select (lbCurSel 1500)) getVariable "mapMarkers")}) then {
+					case "rapid": {
+						if ((isNil {player getvariable "jjx_rapid"}) || {!(player getVariable "jjx_rapid")}) then {
 							lbAdd [1501, format ["%1 - OFF", _x select 0]];
 							lbSetColor [1501,  _forEachIndex, jjx_admin_red];
 							lbSetTooltip [1501, _forEachIndex, _x select 3];
@@ -123,19 +111,124 @@ jjx_admin_update = {
 							lbSetColor [1501, _forEachIndex, jjx_admin_green];
 							lbSetTooltip [1501, _forEachIndex, _x select 3];
 						};
-					} else {
-						lbAdd [1501, format ["%1 - OFF", _x select 0]];
-						lbSetColor [1501,  _forEachIndex, jjx_admin_red];
+					};
+					case "recoil": {
+						if (unitRecoilCoefficient player != 0) then {
+							lbAdd [1501, format ["%1 - OFF", _x select 0]];
+							lbSetColor [1501,  _forEachIndex, jjx_admin_red];
+							lbSetTooltip [1501, _forEachIndex, _x select 3];
+						} else {
+							lbAdd [1501, format ["%1 - ON", _x select 0]];
+							lbSetColor [1501, _forEachIndex, jjx_admin_green];
+							lbSetTooltip [1501, _forEachIndex, _x select 3];
+						};
+					};
+					case "sway": {
+						if ((isNil {player getvariable "jjx_sway"}) || {!(player getVariable "jjx_sway")}) then {
+							lbAdd [1501, format ["%1 - OFF", _x select 0]];
+							lbSetColor [1501,  _forEachIndex, jjx_admin_red];
+							lbSetTooltip [1501, _forEachIndex, _x select 3];
+						} else {
+							lbAdd [1501, format ["%1 - ON", _x select 0]];
+							lbSetColor [1501, _forEachIndex, jjx_admin_green];
+							lbSetTooltip [1501, _forEachIndex, _x select 3];
+						};
+					};
+					case "speed": {
+						if ((isNil {player getvariable "jjx_speed"}) || {!(player getVariable "jjx_speed")}) then {
+							lbAdd [1501, format ["%1 - OFF", _x select 0]];
+							lbSetColor [1501,  _forEachIndex, jjx_admin_red];
+							lbSetTooltip [1501, _forEachIndex, _x select 3];
+						} else {
+							lbAdd [1501, format ["%1 - ON", _x select 0]];
+							lbSetColor [1501, _forEachIndex, jjx_admin_green];
+							lbSetTooltip [1501, _forEachIndex, _x select 3];
+						};
+					};
+				};
+			} forEach selfFeatures;
+		} else {
+			{
+				switch(_x select 1) do {
+					case "header": {
+						lbAdd [1501, _x select 0];
+						lbSetColor [1501,  _forEachIndex, jjx_admin_custom];
+					};
+					case "god": {
+						if ((lbCurSel 1500) != -1) then {
+							if (isNil {((playerList select (lbCurSel 1500)) getVariable "jjx_god")} || {!((playerList select (lbCurSel 1500)) getVariable "jjx_god")}) then {
+								lbAdd [1501, format ["%1 - OFF", _x select 0]];
+								lbSetColor [1501,  _forEachIndex, jjx_admin_red];
+								lbSetTooltip [1501, _forEachIndex, _x select 3];
+							} else {
+								lbAdd [1501, format ["%1 - ON", _x select 0]];
+								lbSetColor [1501, _forEachIndex, jjx_admin_green];
+								lbSetTooltip [1501, _forEachIndex, _x select 3];
+							};
+						} else {
+							lbAdd [1501, format ["%1 - OFF", _x select 0]];
+							lbSetColor [1501,  _forEachIndex, jjx_admin_red];
+							lbSetTooltip [1501, _forEachIndex, _x select 3];
+						};
+					};
+					case "mapTP": {
+						if ((lbCurSel 1500) != -1) then {
+							if (isNil {((playerList select (lbCurSel 1500)) getVariable "jjx_mapTP")} || {!((playerList select (lbCurSel 1500)) getVariable "jjx_mapTP")}) then {
+								lbAdd [1501, format ["%1 - OFF", _x select 0]];
+								lbSetColor [1501,  _forEachIndex, jjx_admin_red];
+								lbSetTooltip [1501, _forEachIndex, _x select 3];
+							} else {
+								lbAdd [1501, format ["%1 - ON", _x select 0]];
+								lbSetColor [1501, _forEachIndex, jjx_admin_green];
+								lbSetTooltip [1501, _forEachIndex, _x select 3];
+							};
+						} else {
+							lbAdd [1501, format ["%1 - OFF", _x select 0]];
+							lbSetColor [1501,  _forEachIndex, jjx_admin_red];
+							lbSetTooltip [1501, _forEachIndex, _x select 3];
+						};
+					};
+					case "freeze": {
+						if ((lbCurSel 1500) != -1) then {
+							if (isNil {((playerList select (lbCurSel 1500)) getVariable "jjx_frozen")} || {!((playerList select (lbCurSel 1500)) getVariable "jjx_frozen")}) then {
+								lbAdd [1501, format ["%1 - OFF", _x select 0]];
+								lbSetColor [1501,  _forEachIndex, jjx_admin_red];
+								lbSetTooltip [1501, _forEachIndex, _x select 3];
+							} else {
+								lbAdd [1501, format ["%1 - ON", _x select 0]];
+								lbSetColor [1501, _forEachIndex, jjx_admin_green];
+								lbSetTooltip [1501, _forEachIndex, _x select 3];
+							};
+						} else {
+							lbAdd [1501, format ["%1 - OFF", _x select 0]];
+							lbSetColor [1501,  _forEachIndex, jjx_admin_red];
+							lbSetTooltip [1501, _forEachIndex, _x select 3];
+						};
+					};
+					case "markers": {
+						if ((lbCurSel 1500) != -1) then {
+							if (isNil {((playerList select (lbCurSel 1500)) getVariable "mapMarkers")} || {!((playerList select (lbCurSel 1500)) getVariable "mapMarkers")}) then {
+								lbAdd [1501, format ["%1 - OFF", _x select 0]];
+								lbSetColor [1501,  _forEachIndex, jjx_admin_red];
+								lbSetTooltip [1501, _forEachIndex, _x select 3];
+							} else {
+								lbAdd [1501, format ["%1 - ON", _x select 0]];
+								lbSetColor [1501, _forEachIndex, jjx_admin_green];
+								lbSetTooltip [1501, _forEachIndex, _x select 3];
+							};
+						} else {
+							lbAdd [1501, format ["%1 - OFF", _x select 0]];
+							lbSetColor [1501,  _forEachIndex, jjx_admin_red];
+							lbSetTooltip [1501, _forEachIndex, _x select 3];
+						};
+					};
+					default {
+						lbAdd [1501, _x select 0];
 						lbSetTooltip [1501, _forEachIndex, _x select 3];
 					};
 				};
-				//next case...
-				default {
-					lbAdd [1501, _x select 0];
-					lbSetTooltip [1501, _forEachIndex, _x select 3];
-				};
-			};
-		} forEach features; //If a feature is specified here it will have custom formatting applied to it.
+			} forEach features;
+		};
 
 		uiSleep 0.05; //Menu refresh rate (currently 20Hz)
 		lbClear 1500; //Clear the players list
@@ -156,20 +249,23 @@ jjx_admin_update = {
 
 jjx_admin_exec = {
 	params ["_player","_feature"];
-	if (_feature != -1) then { //If a feature is selected
-		if ((features select _feature) select 2) then { //If the feature has its "Player required" field set to true
-			if (_player != -1) then { //If a player is selected
-				_code = format ["[%1] spawn jjx_admin_%2", _player, (features select _feature) select 1];
-				call compile _code;
-			} else { //If a player isn't selected
-				hintSilent parseText format ["%1 To execute <t color='#f45f42'>%2</t> you need to select a player", hintHeader, (features select _feature) select 0];[] spawn {;uiSleep 4;hintSilent "";};
-			};
-		} else { //If the feature has its "Player required" field set to false
-			_code = format ["[] spawn jjx_admin_%1", (features select _feature) select 1];
+	if (_player == -1) then {
+		if (_feature != -1) then {
+			_code = format ["[] spawn jjx_self_%1", (selfFeatures select _feature) select 1];
 			call compile _code;
+			if (done) then {
+				hint "done";
 			};
-	} else { //If a feature isn't selected
-		hintSilent parseText format ["%1 Select a feature", hintHeader]; //Tell the user to select a feature
+		} else {
+			hintSilent parseText format ["%1 Please select a player or feature", hintHeader];
+		};
+	} else {
+		if (_feature != -1) then {
+			_code = format ["[%1] spawn jjx_admin_%2", _player, (features select _feature) select 1];
+			call compile _code;
+		} else {
+			hintSilent parseText format ["%1 To execute <t color='#f45f42'>%2</t> you need to select a player", hintHeader, (features select _feature) select 0];[] spawn {;uiSleep 4;hintSilent "";};
+		};
 	};
 };
 publicVariable "jjx_admin_exec";
@@ -178,9 +274,20 @@ jjx_admin_init = {
 	hintHeader = "<t color='#41f48c' size='2'>JJx Admin Menu</t><br /><t size='0.68'>by JJ</t><br />-------- -_- --------<br /><br />";
 	publicVariable hintHeader;
 
+	selfFeatures = [
+		["-=- Self Options -=-", "header", false, "Select a player for player options!"],
+		["God", "god", true, "Toggle invulnerability."],
+		["Vehicle God", "vehGod", true, "Toggle invulnerability for the current vehicle."],
+		["Infinite Ammo", "ammo", true, "Toggle infinite ammo."],
+		["Rapid Fire", "rapid", true, "Toggle rapid fire."],
+		["No recoil", "recoil", true, "Toggle weapon recoil."],
+		["No sway", "sway", true, "Toggle weapon sway."],
+		["Snort speed", "speed", true, "toggle speed hack."]
+	];
+
 	features = [];
-	featuresOff = [ //List of all features to display in the format ["Display Name", "funmctionName","Requires Player selected", "ToolTip"],
-		//Need to test if I can add a header / spacer (actions)
+	featuresOff = [
+		["-=- Options -=-", "header", false, ""],
 		["Kill", "kill", true, "Select a player to kill"],
 		["Heal", "heal", true, "Select a player to heal"],
 		["TP to player", "tpToPlayer", true, "Select a player to teleport to"],
@@ -196,12 +303,14 @@ jjx_admin_init = {
 		["Take loadout", "takeLoadout", true, "Select a player to take their loadout"],
 		["Give loadout", "giveLoadout", true, "Select a player to give them your loadout"],
 		["Piss", "pee", true, "Make the player you select have the sudden urge to piss"],
-		//Header / spacer (Toggleable)
+		["", "", false, ""],
+		["-=- Toggleable -=-", "header", false, ""],
 		["God", "god", true, "Select a player to toggle their imortality"],
 		["Map TP", "mapTP", true, "Select a player to toggle their map teleportation"],
 		["Freeze", "freeze", true, "Select a player to toggle freeze them"],
 		["Map Markers", "markers", true, "Select a player to toggle map markers for them"],
-		//Header /spacer (Utility)
+		["", "", false, ""],
+		["-=- Utility -=-", "header", false, ""],
 		["Go to lobby", "lobby", true, "Select a player to send them to the lobby"],
 		["Player info", "info", true, "Get info on the selected player"]
 	];
@@ -238,8 +347,129 @@ jjx_admin_playerInfo = { //Returns the In-game name, Steam name, UID and current
 	hintSilent parseText format ["%1 %2 <br /> %3 <br /> %4 <br /><br /> <t size='1.6' color='#f45f42'>The players equipment was copied to clipboard, press CTRL+V in a note program to paste it.</t>", hintHeader, _infoName, _infoSteam, _infoUID]; [] spawn {uiSleep 4;hintSilent "";};
 }; 
 
+// SELF FEATURES
 
-// FEATURES BELOW
+jjx_self_god = {
+	if (isDamageAllowed player) then {
+		player allowDamage false;
+		hintSilent parseText format ["%1 You made yourself <t color='#42ebf4'>immortal</t>", hintHeader];[] spawn {uiSleep 3;hintSilent "";};
+	} else {
+		player allowDamage true;
+		hintSilent parseText format ["%1 You made yourself <t color='#42ebf4'>mortal</t>", hintHeader];[] spawn {uiSleep 3;hintSilent "";};
+	};
+};
+
+jjx_self_vehGod = {
+	_vehicle = objectParent player;
+	if (_vehicle isEqualTo objNull) then {
+		hintSilent parseText format ["%1You need to be in a vehicle to use this.", hintHeader];
+	} else {
+		if (isDamageAllowed _vehicle) then {
+			_vehicle allowDamage false;
+			hintSilent parseText format ["%1 You made this vehicle <t color='#42ebf4'>immortal</t>", hintHeader];[] spawn {uiSleep 3;hintSilent "";};
+		} else {
+			_vehicle allowDamage true;
+			hintSilent parseText format ["%1 You made this vehicle <t color='#42ebf4'>mortal</t>", hintHeader];[] spawn {uiSleep 3;hintSilent "";};
+		};
+	};
+};
+
+jjx_self_ammo = {
+	if (isNil {player getvariable "jjx_ammo"}) then {
+		player setVariable ["jjx_ammo", false];
+	};
+	if (player getvariable "jjx_ammo") then {
+		player removeEventHandler ["fired", ammoHandler];
+		player setVariable ["jjx_ammo", false];
+		hintSilent parseText format ["%1You <t color='#42ebf4'>disabled</t> infinite ammo.", hintHeader];[] spawn {uiSleep 3;hintSilent "";};
+	} else {
+		ammoHandler = player addEventHandler ["fired", {(_this select 0) setvehicleammo 1}];
+		player setVariable ["jjx_ammo", true];
+		hintSilent parseText format ["%1You <t color='#42ebf4'>enabled</t> infinite ammo.", hintHeader];[] spawn {uiSleep 3;hintSilent "";};
+	};
+};
+
+jjx_self_rapid = {
+	if (isNil {player getvariable "jjx_rapid"}) then {
+		player setVariable ["jjx_rapid", false];
+	};
+	if (player getvariable "jjx_rapid") then {
+		player setVariable ["jjx_rapid", false];
+		hintSilent parseText format ["%1You <t color='#42ebf4'>disabled</t> rapid fire.", hintHeader];[] spawn {uiSleep 3;hintSilent "";};
+	} else {
+		player setVariable ["jjx_rapid", true];
+		hintSilent parseText format ["%1You <t color='#42ebf4'>enabled</t> rapid fire.", hintHeader];[] spawn {uiSleep 3;hintSilent "";};
+	};
+	while {player getvariable "jjx_rapid"} do {
+		_vehicle = objectParent player;
+		if (isNull _vehicle) then {
+			player setWeaponReloadingTime[player, currentWeapon player, 0];
+		} else {
+			_vehicle setWeaponReloadingTime[_vehicle, currentWeapon _vehicle, 0];
+		};
+    	sleep 0.01;
+	};
+};
+
+jjx_self_recoil = {
+	if (unitRecoilCoefficient player == 0) then {
+		player setUnitRecoilCoefficient 1;
+		hintSilent parseText format ["%1You <t color='#42ebf4'>disabled</t> weapon recoil.", hintHeader];[] spawn {uiSleep 3;hintSilent "";};
+	} else {
+		player setUnitRecoilCoefficient 0;
+		hintSilent parseText format ["%1You <t color='#42ebf4'>enable</t> weapon recoil.", hintHeader];[] spawn {uiSleep 3;hintSilent "";};
+	};
+};
+
+jjx_self_sway = {
+	if (isNil {player getvariable "jjx_sway"}) then {
+		player setVariable ["jjx_sway", false];
+	};
+	if (player getvariable "jjx_sway") then {
+		player setVariable ["jjx_sway", false];
+		hintSilent parseText format ["%1You <t color='#42ebf4'>disabled</t> weapon sway.", hintHeader];[] spawn {uiSleep 3;hintSilent "";};
+	} else {
+		player setVariable ["jjx_sway", true];
+		hintSilent parseText format ["%1You <t color='#42ebf4'>enable</t> weapon sway.", hintHeader];[] spawn {uiSleep 3;hintSilent "";};
+	};
+	while {player getvariable "jjx_sway"} do {
+		player setCustomAimCoef 0;
+	};
+	player setCustomAimCoef 1;
+};
+
+jjx_self_speed = {
+	if (isNil {player getvariable "jjx_speed"}) then {
+		player setVariable ["jjx_speed", false];
+	};
+	if (player getvariable "jjx_speed") then {
+		player setVariable ["jjx_speed", false];
+		hintSilent parseText format ["%1You <t color='#42ebf4'>disabled</t> speed.", hintHeader];[] spawn {uiSleep 3;hintSilent "";};
+	} else {
+		player setVariable ["jjx_speed", true];
+		hintSilent parseText format ["%1You <t color='#42ebf4'>enable</t> speed.", hintHeader];[] spawn {uiSleep 3;hintSilent "";};
+	};
+	while {player getvariable "jjx_speed"} do {
+		player setAnimSpeedCoef 5;
+	};
+	player setAnimSpeedCoef 1;
+};
+
+jjx_self_keybinds = {
+	if (isNil {player getvariable "jjx_keybinds"}) then {
+		player setVariable ["jjx_keybinds", false];
+	};
+	if (player getvariable "jjx_keybinds") then {
+		player setVariable ["jjx_keybinds", false];
+		hintSilent parseText format ["%1You <t color='#42ebf4'>disabled</t> keybinds.", hintHeader];[] spawn {uiSleep 3;hintSilent "";};
+	} else {
+		player setVariable ["jjx_keybinds", true];
+		hintSilent parseText format ["%1You <t color='#42ebf4'>enable</t> keybinds.<br /><br />Keybinds are:<br />", hintHeader];[] spawn {uiSleep 3;hintSilent "";};
+	};
+};
+
+
+// FEATURES
 
 
 jjx_admin_kill = {
@@ -593,7 +823,7 @@ jjx_loadout_delete = {
 
 jjx_admin_publishVar = {
 	{
-	publicVariable format ["jjx_admin_%1", _x select 1]; //Turn all functions into public variables
+		publicVariable format ["jjx_admin_%1", _x select 1];
 	} forEach featuresOff;
 };
 
