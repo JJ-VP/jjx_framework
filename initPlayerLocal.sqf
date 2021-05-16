@@ -22,9 +22,9 @@ _keyDown = (findDisplay 46) displayAddEventHandler ["KeyDown", 'if (_this select
    while {true} do {
         player setVariable ["PlayerFPS", floor diag_fps, true];
         if (isDamageAllowed player) then {
-        	player setVariable ["jjx_god", true, true];
-        } else {
         	player setVariable ["jjx_god", false, true];
+        } else {
+        	player setVariable ["jjx_god", true, true];
         };
         if (userInputDisabled) then {
         	player setVariable ["jjx_frozen", true, true];
