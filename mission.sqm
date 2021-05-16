@@ -16,14 +16,14 @@ class EditorData
 	};
 	class LayerIndexProvider
 	{
-		nextID=64;
+		nextID=70;
 	};
 	class Camera
 	{
 		pos[]={4100.2007,11.294497,4095.0935};
-		dir[]={-0.065399848,-0.70740616,0.70386499};
-		up[]={-0.065452524,0.70676476,0.70443064};
-		aside[]={0.99576885,-2.8094291e-008,0.092523322};
+		dir[]={-0.065395676,-0.70736116,0.70382071};
+		up[]={-0.065442748,0.70685226,0.70432734};
+		aside[]={0.99571109,0,0.092516735};
 	};
 };
 binarizationWanted=0;
@@ -271,6 +271,7 @@ class Mission
 					class Attributes
 					{
 						description="Rifleman@Players";
+						isPlayer=1;
 						isPlayable=1;
 					};
 					id=52;
